@@ -1,0 +1,45 @@
+# GitHub Actions workflow
+# Runs the HN sort validator automatically on every push and pull request
+# Also runs on a daily schedule to catch any HN sorting regressions over time
+
+name: Validate HN Sort Order
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 9 * * *"  # runs every day at 9am UTC
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Run HN sort validator
+        run: node index.js
+
+      - name: Upload report as artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: validation-report
+          path: |
+            report.html
+            violation-screenshot.png
+          if-no-files-found: ignore

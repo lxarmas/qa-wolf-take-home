@@ -1,61 +1,54 @@
 // EDIT THIS FILE TO COMPLETE ASSIGNMENT QUESTION 1
 //
 // WHAT THIS SCRIPT DOES:
-// 1. Opens a headless (invisible) Chromium browser using Playwright
-// 2. Navigates to Hacker News /newest page
+// 1. Opens a headless Chromium browser using Playwright
+// 2. Navigates to Hacker News /newest with automatic retry on failure
 // 3. Collects exactly 100 articles by paginating through multiple pages
-// 4. Validates that articles are sorted from newest to oldest
-// 5. Prints a detailed report to the terminal
-// 6. Generates a report.html file and opens it automatically in the browser
+// 4. Validates articles are sorted from newest to oldest
+// 5. Takes a screenshot if violations are found (evidence capture)
+// 6. Prints a detailed terminal report
+// 7. Generates a report.html and opens it automatically in the browser
 
 const { chromium } = require("playwright");
-const fs   = require("fs");   // built-in Node.js module for writing files
-const path = require("path"); // built-in Node.js module for file paths
-const { exec } = require("child_process"); // built-in — lets us run shell commands
+const fs            = require("fs");
+const path          = require("path");
+const { exec }      = require("child_process");
 
 // ─── Config ───────────────────────────────────────────────────────────────────
-// All magic numbers and URLs live here so they're easy to find and update
 
 const TARGET_URL             = "https://news.ycombinator.com/newest";
-const REQUIRED_COUNT         = 100;  // exact number of articles we must validate
-const ARTICLES_PER_PAGE      = 30;   // HN shows 30 per page, so we need 4 pages
-const SORT_TOLERANCE_SECONDS = 60;   // allow up to 60s difference — HN timestamps
-                                     // are rounded, "39 min" and "40 min" are equal
-const REPORT_PATH = path.join(__dirname, "report.html"); // where to save the report
+const REQUIRED_COUNT         = 100;
+const SORT_TOLERANCE_SECONDS = 60;  // HN rounds timestamps — 60s wiggle room
+const MAX_RETRIES            = 3;   // auto-retry up to 3 times on network failure
+const REPORT_PATH            = path.join(__dirname, "report.html");
+const SCREENSHOT_PATH        = path.join(__dirname, "violation-screenshot.png");
 
 // ─── Helper: parseAgeToSeconds ────────────────────────────────────────────────
-// HN doesn't give us real timestamps — it gives human-readable strings like
-// "3 minutes ago" or "2 hours ago". We can't compare those mathematically,
-// so this function converts them all into a single unit: seconds.
-// Lower seconds = newer article. Higher seconds = older article.
+// HN shows relative times like "3 minutes ago" — not real timestamps.
+// Converts them to seconds so we can compare articles mathematically.
+// Lower seconds = newer. Higher seconds = older.
 
 function parseAgeToSeconds(ageText) {
-  // Regex extracts the number and unit — e.g. "3 minutes ago" → ["3", "minutes"]
   const match = ageText.match(/(\d+)\s+(second|minute|hour|day|month|year)/i);
-
-  // If the string doesn't match our pattern, return null instead of crashing
   if (!match) return null;
 
-  const value = parseInt(match[1], 10);   // "3" → 3
-  const unit  = match[2].toLowerCase();   // "Minutes" → "minutes"
+  const value = parseInt(match[1], 10);
+  const unit  = match[2].toLowerCase();
 
-  // How many seconds each unit is worth
   const multipliers = {
     second: 1,
     minute: 60,
     hour:   3600,
     day:    86400,
-    month:  2592000,  // ~30 days
+    month:  2592000,
     year:   31536000,
   };
 
-  // e.g. 3 minutes → 3 * 60 = 180 seconds
-  // ?? 0 is a safety fallback if the unit somehow isn't in the table
   return value * (multipliers[unit] ?? 0);
 }
 
 // ─── Helper: printBanner ──────────────────────────────────────────────────────
-// Purely cosmetic — draws a unicode box around a string in the terminal
+// Draws a unicode box around a string in the terminal — purely cosmetic
 
 function printBanner(text) {
   const line = "─".repeat(text.length + 4);
@@ -66,61 +59,73 @@ function printBanner(text) {
 
 // ─── Helper: collectArticlesFromPage ─────────────────────────────────────────
 // Jumps into the browser with page.evaluate() and reads the live HTML.
-// Returns an array of { rank, title, ageText } — one object per article row.
+// Returns an array of { rank, title, ageText } — one object per article.
 
 async function collectArticlesFromPage(page) {
   return page.evaluate(() => {
-    // HN marks every article row with the class "athing"
     const rows = document.querySelectorAll("tr.athing");
-
-    // querySelectorAll returns a NodeList — convert to Array to use .map()
     return Array.from(rows).map((row) => {
       const rank  = parseInt(row.querySelector(".rank")?.textContent ?? "0");
       const title = row.querySelector(".titleline > a")?.textContent?.trim() ?? "(no title)";
-
-      // The age lives in the NEXT sibling row, not this one (HN's HTML structure)
       const subRow  = row.nextElementSibling;
       const ageText = subRow?.querySelector(".age")?.textContent?.trim() ?? "";
-
       return { rank, title, ageText };
     });
   });
 }
 
+// ─── Helper: withRetry ────────────────────────────────────────────────────────
+// Wraps any async function with automatic retry logic.
+// If it fails, waits 2 seconds and tries again up to MAX_RETRIES times.
+// Real QA systems must handle flaky networks — this is how.
+
+async function withRetry(fn, label) {
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt === MAX_RETRIES) throw err;
+      console.warn(`  ⚠️  ${label} failed (attempt ${attempt}/${MAX_RETRIES}) — retrying in 2s...`);
+      await new Promise((r) => setTimeout(r, 2000));
+    }
+  }
+}
+
 // ─── Helper: generateReport ───────────────────────────────────────────────────
-// Takes the validated articles + violations and writes a self-contained
-// report.html file. No external dependencies — pure HTML + CSS + JS inline.
-// The file opens automatically in the browser after the script finishes.
+// Builds a self-contained HTML report file showing all 100 articles.
+// Violations are highlighted in red. No external dependencies.
 
 function generateReport({ articles, violations, durationMs }) {
   const passed    = violations.length === 0;
   const runTime   = (durationMs / 1000).toFixed(2);
   const timestamp = new Date().toLocaleString();
 
-  // Build one <tr> per article — highlight violations in red
   const rows = articles.map((a) => {
     const isViolation = violations.some((v) => v.curr.rank === a.rank);
-    const rowClass    = isViolation ? 'style="background:#fff0f0;"' : "";
+    const rowStyle    = isViolation ? 'style="background:#fff0f0;"' : "";
     const badge       = isViolation
       ? '<span style="background:#ffd0d0;color:#c00;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">violation</span>'
       : '<span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span>';
 
     return `
-      <tr ${rowClass}>
+      <tr ${rowStyle}>
         <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">${a.rank}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-          ${a.title}
-        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${a.title}</td>
         <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">${a.ageText}</td>
         <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;">${badge}</td>
       </tr>`;
   }).join("");
 
-  // Full HTML document — entirely self-contained, no external requests
+  const screenshotNote = !passed && fs.existsSync(SCREENSHOT_PATH)
+    ? `<div style="margin-bottom:1.5rem;padding:1rem;background:#fff8e1;border-radius:8px;font-size:13px;color:#888;">
+        📸 A screenshot of the violation was saved to <code>violation-screenshot.png</code>
+       </div>`
+    : "";
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>HN Sort Validator — Report</title>
   <style>
@@ -135,16 +140,14 @@ function generateReport({ articles, violations, durationMs }) {
     .header p  { font-size: 13px; color: #888; margin-top: 3px; }
     .status-badge { padding: 6px 16px; border-radius: 20px; font-size: 13px;
                     font-weight: 600; white-space: nowrap; margin-left: auto; }
-    .status-pass { background: #e6f4ea; color: #1a7f37; }
-    .status-fail { background: #ffd0d0; color: #c00; }
+    .pass { background: #e6f4ea; color: #1a7f37; }
+    .fail { background: #ffd0d0; color: #c00; }
     .metrics { display: grid; grid-template-columns: repeat(4, 1fr);
                gap: 12px; margin-bottom: 1.5rem; }
     .metric { background: #f9f9f9; border-radius: 8px; padding: 1rem; }
     .metric-label { font-size: 11px; color: #999; text-transform: uppercase;
                     letter-spacing: 0.05em; margin-bottom: 6px; }
     .metric-value { font-size: 24px; font-weight: 600; }
-    .metric-value.green { color: #1a7f37; }
-    .metric-value.red   { color: #c00; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     thead th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 600;
                color: #999; text-transform: uppercase; letter-spacing: 0.05em;
@@ -156,21 +159,18 @@ function generateReport({ articles, violations, durationMs }) {
 </head>
 <body>
   <div class="card">
-
     <div class="header">
       <div>
         <h1>🐺 Hacker News sort validator</h1>
         <p>Run at ${timestamp} &nbsp;·&nbsp; <a href="${TARGET_URL}" style="color:#ff6600;">${TARGET_URL}</a></p>
       </div>
-      <span class="status-badge ${passed ? "status-pass" : "status-fail"}">
-        ${passed ? "✓ PASS" : "✗ FAIL"}
-      </span>
+      <span class="status-badge ${passed ? "pass" : "fail"}">${passed ? "✓ PASS" : "✗ FAIL"}</span>
     </div>
 
     <div class="metrics">
       <div class="metric">
         <div class="metric-label">Status</div>
-        <div class="metric-value ${passed ? "green" : "red"}">${passed ? "PASS" : "FAIL"}</div>
+        <div class="metric-value ${passed ? "pass" : "fail"}" style="color:${passed ? "#1a7f37" : "#c00"}">${passed ? "PASS" : "FAIL"}</div>
       </div>
       <div class="metric">
         <div class="metric-label">Articles checked</div>
@@ -178,13 +178,15 @@ function generateReport({ articles, violations, durationMs }) {
       </div>
       <div class="metric">
         <div class="metric-label">Violations</div>
-        <div class="metric-value ${violations.length === 0 ? "green" : "red"}">${violations.length}</div>
+        <div class="metric-value" style="color:${violations.length === 0 ? "#1a7f37" : "#c00"}">${violations.length}</div>
       </div>
       <div class="metric">
         <div class="metric-label">Duration</div>
         <div class="metric-value">${runTime}s</div>
       </div>
     </div>
+
+    ${screenshotNote}
 
     <table>
       <thead>
@@ -201,19 +203,17 @@ function generateReport({ articles, violations, durationMs }) {
     <div class="footer">
       Generated by QA Wolf take-home validator &nbsp;·&nbsp; Playwright + Node.js
     </div>
-
   </div>
 </body>
 </html>`;
 
-  // Write the file to disk
   fs.writeFileSync(REPORT_PATH, html, "utf8");
   console.log(`\n📄 Report saved → ${REPORT_PATH}`);
 }
 
 // ─── Helper: openReport ───────────────────────────────────────────────────────
-// Opens report.html in the default browser using the OS's open command.
-// Works on macOS (open), Linux (xdg-open), and Windows (start).
+// Opens report.html in the default browser.
+// Detects the OS and runs the right shell command.
 
 function openReport() {
   const commands = {
@@ -229,32 +229,37 @@ function openReport() {
 }
 
 // ─── Main Function ────────────────────────────────────────────────────────────
-// Orchestrates everything: launches browser, collects articles, validates,
-// generates the HTML report, and opens it automatically.
 
 async function sortHackerNewsArticles() {
   printBanner("🐺 QA Wolf — Hacker News Sort Validator");
 
-  const startTime = Date.now(); // track how long the whole thing takes
+  const startTime = Date.now();
 
-  // Launch Chromium in headless mode — invisible, nothing can close it accidentally
+  // Launch headless Chromium — invisible, nothing can close it accidentally
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext();
   const page    = await context.newPage();
 
-  page.on("crash", () => { console.error("❌ Page crashed!"); });
+  page.on("crash", () => console.error("❌ Page crashed!"));
 
+  // Navigate with retry — handles flaky networks gracefully
   console.log(`📡 Navigating to ${TARGET_URL} ...\n`);
-  await page.goto(TARGET_URL, { waitUntil: "domcontentloaded", timeout: 30_000 });
+  await withRetry(
+    () => page.goto(TARGET_URL, { waitUntil: "domcontentloaded", timeout: 30_000 }),
+    "Navigation"
+  );
 
   // ── Step 1: Collect 100 articles across multiple pages ───────────────────
   const allArticles = [];
 
   while (allArticles.length < REQUIRED_COUNT) {
-    await page.waitForSelector("tr.athing", { timeout: 10_000 });
+    await withRetry(
+      () => page.waitForSelector("tr.athing", { timeout: 10_000 }),
+      "Waiting for articles"
+    );
 
     const batch = await collectArticlesFromPage(page);
-    allArticles.push(...batch); // spread unpacks the array into individual items
+    allArticles.push(...batch);
 
     console.log(`  📄 Page loaded — collected ${batch.length} articles (total: ${allArticles.length})`);
 
@@ -267,25 +272,23 @@ async function sortHackerNewsArticles() {
       break;
     }
 
-    // Click More, wait for the new page to load, then loop again
     await moreLink.click();
     await page.waitForLoadState("domcontentloaded");
     await page.waitForSelector("tr.athing", { timeout: 15_000 });
   }
 
-  // Trim to exactly 100 — we may have grabbed up to 120 across 4 pages
+  // Trim to exactly 100
   const articles = allArticles.slice(0, REQUIRED_COUNT);
 
   // ── Step 2: Validate count ───────────────────────────────────────────────
   console.log(`\n🔢 Articles collected: ${articles.length} (expected: ${REQUIRED_COUNT})`);
-
   if (articles.length !== REQUIRED_COUNT) {
     console.error(`❌ FAIL — Expected ${REQUIRED_COUNT} articles but got ${articles.length}.`);
     await browser.close();
     process.exit(1);
   }
 
-  // ── Step 3: Add numeric age to each article for comparison ───────────────
+  // ── Step 3: Add numeric age for comparison ───────────────────────────────
   const articlesWithAge = articles.map((a) => ({
     ...a,
     ageSeconds: parseAgeToSeconds(a.ageText),
@@ -302,13 +305,20 @@ async function sortHackerNewsArticles() {
 
     if (prev.ageSeconds === null || curr.ageSeconds === null) continue;
 
-    // A violation = current article is more than 60s newer than the one above it
+    // Flag only if current is more than SORT_TOLERANCE_SECONDS newer than previous
     if (curr.ageSeconds < prev.ageSeconds - SORT_TOLERANCE_SECONDS) {
       violations.push({ index: i, prev, curr });
     }
   }
 
-  // ── Step 5: Print terminal results ──────────────────────────────────────
+  // ── Step 5: Screenshot on violation — capture evidence ───────────────────
+  // A real QA engineer always saves evidence when something fails
+  if (violations.length > 0) {
+    await page.screenshot({ path: SCREENSHOT_PATH, fullPage: true });
+    console.log(`📸 Violation screenshot saved → ${SCREENSHOT_PATH}\n`);
+  }
+
+  // ── Step 6: Print terminal results ──────────────────────────────────────
   if (violations.length === 0) {
     console.log("✅ PASS — All 100 articles are sorted from newest to oldest.\n");
   } else {
@@ -321,7 +331,7 @@ async function sortHackerNewsArticles() {
     });
   }
 
-  // ── Step 6: Generate + open HTML report ─────────────────────────────────
+  // ── Step 7: Generate + open HTML report ─────────────────────────────────
   const durationMs = Date.now() - startTime;
   generateReport({ articles: articlesWithAge, violations, durationMs });
   openReport();
@@ -333,8 +343,8 @@ async function sortHackerNewsArticles() {
 }
 
 // ─── Entry Point ──────────────────────────────────────────────────────────────
-// IIFE (Immediately Invoked Function Expression) — lets us use async/await
-// at the top level. try/catch gives clean error messages on unexpected failures.
+// IIFE lets us use async/await at the top level.
+// try/catch gives clean error messages on unexpected failures.
 
 (async () => {
   try {
