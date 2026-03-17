@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HN Sort Validator — Report</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           background: #f6f6ef; min-height: 100vh; padding: 2rem; color: #222; }
+    .card { background: #fff; border-radius: 10px; padding: 2rem;
+            max-width: 960px; margin: 0 auto; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem;
+              padding-bottom: 1.5rem; border-bottom: 1px solid #f0f0f0; }
+    .header h1 { font-size: 20px; font-weight: 600; }
+    .header p  { font-size: 13px; color: #888; margin-top: 3px; }
+    .status-badge { padding: 6px 16px; border-radius: 20px; font-size: 13px;
+                    font-weight: 600; white-space: nowrap; margin-left: auto; }
+    .status-pass { background: #e6f4ea; color: #1a7f37; }
+    .status-fail { background: #ffd0d0; color: #c00; }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr);
+               gap: 12px; margin-bottom: 1.5rem; }
+    .metric { background: #f9f9f9; border-radius: 8px; padding: 1rem; }
+    .metric-label { font-size: 11px; color: #999; text-transform: uppercase;
+                    letter-spacing: 0.05em; margin-bottom: 6px; }
+    .metric-value { font-size: 24px; font-weight: 600; }
+    .metric-value.green { color: #1a7f37; }
+    .metric-value.red   { color: #c00; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 600;
+               color: #999; text-transform: uppercase; letter-spacing: 0.05em;
+               border-bottom: 2px solid #f0f0f0; }
+    tbody tr:hover { background: #fafafa; }
+    .footer { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #f0f0f0;
+              font-size: 12px; color: #bbb; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="card">
+
+    <div class="header">
+      <div>
+        <h1>🐺 Hacker News sort validator</h1>
+        <p>Run at 3/17/2026, 10:42:50 AM &nbsp;·&nbsp; <a href="https://news.ycombinator.com/newest" style="color:#ff6600;">https://news.ycombinator.com/newest</a></p>
+      </div>
+      <span class="status-badge status-pass">
+        ✓ PASS
+      </span>
+    </div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">Status</div>
+        <div class="metric-value green">PASS</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Articles checked</div>
+        <div class="metric-value">100</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Violations</div>
+        <div class="metric-value green">0</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Duration</div>
+        <div class="metric-value">2.61s</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:48px">#</th>
+          <th>Title</th>
+          <th>Age</th>
+          <th style="width:90px">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">1</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: I built a 7-agent AI marketing crew – 235 replies, /bin/zsh revenue
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">0 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">2</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Real-World Industrial-Scale Verification: LLM-Driven Theorem Proving on SeL4
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">1 minute ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">3</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Complete Guide to AI Agent Observability in Production
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">2 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">4</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          The Byzantine MCP Router – AI Safety and Security via Semantic Consensus
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">2 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">5</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          More Big Tech Layoffs Loom as Meta Mulls 20% Cut to Its Workforce
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">2 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">6</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Oils for Unix – A Pause in the Project
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">2 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">7</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Free alternative to Harvey/Legora's tabular document review
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">2 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">8</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Pgtui, a Postgres TUI Client
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">3 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">9</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Migrating from DigitalOcean to Hetzner
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">4 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">10</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          What Does the Future of Programming Look Like?
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">4 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">11</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Simulation we live in was created to develop AGI, and will soon be turned off
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">6 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">12</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          RocketRide – Build and run AI/data pipelines within VS Code, Cursor etc.
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">6 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">13</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          I canceled my Antigravity subscription today. Here is why
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">7 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">14</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Tab Organizer for Developer
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">8 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">15</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Email for agents – agent doesn't need another Gmail
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">12 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">16</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Webtool: Let AI agents control your live Chrome session with CDP
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">13 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">17</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Railguard – A safer –dangerously-skip-permissions for Claude Code
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">13 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">18</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Top US counterterrorism official resigns over Iran war, urging Trump to 'reverse
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">13 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">19</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Ecological Institutionalism: Toward a Constitutional Architecture for Reciprocal
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">17 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">20</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Less code, more power: Why we rolled our own React Server Components framework
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">17 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">21</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          QuickBooks Online MCP Server
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">18 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">22</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          How to Effectively Adopt AI Tooling in Software Development
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">18 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">23</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: One, cross domain auto-researching knowledge graph Claude orchestrator
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">18 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">24</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Rando Sans solves the biggest problem with handwriting fonts
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">19 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">25</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          The Cost of Agentic Failure
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">19 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">26</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Thinking Big
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">19 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">27</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Flowershow Publish Markdown in seconds. Hosted, free, zero config
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">20 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">28</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Spaceflight Started 100 Years Ago in a Massachusetts Cabbage Patch
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">21 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">29</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          AI Entrepreneurs
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">22 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">30</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Alive – Five Markdown files that give Claude Code a persistent memory
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">22 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">31</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Agent Caching in Fiddler
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">23 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">32</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Reversing BEDaisy.sys: Static Analysis of BattlEye's Kernel Anti-Cheat Driver
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">25 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">33</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Sugar – Cross-project memory for AI coding agents via MCP
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">25 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">34</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Garry Tan's thirteen opinionated workflow skills for Claude Code
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">25 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">35</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Are AI agents slowing us down?
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">25 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">36</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          China's Fusion Magnet Technology Based on the Superconducting Tokamak Strategy
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">25 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">37</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          After three months, Samsung is ending sales of the $2,899 Galaxy Z TriFold
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">26 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">38</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          I moved to the alps to shovel snow
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">26 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">39</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          National Ferret School – Cable and threading ferrets
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">26 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">40</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Mastercard's new generative AI model
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">27 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">41</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          AI's Oppenheimer Moment
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">27 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">42</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          A.I. Chatbots Want Your Health Records. Tread Carefully
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">28 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">43</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Evolutionary Database Design
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">28 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">44</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          OpenClaw on Amazon Lightsail to run your autonomous private AI agents
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">28 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">45</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Synthetic Data, Real Harm
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">28 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">46</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Open Source Projects Need to Adapt to the AI Coding Era
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">28 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">47</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Generative AI in business schools: friend or foe?
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">28 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">48</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Measuring progress toward AGI: A cognitive framework
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">29 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">49</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Ask HN: Did Google Sign-In roll out a breaking change this morning?
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">29 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">50</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Tech Talk: How Electron went Wayland-native, and what it means for your apps
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">32 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">51</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          A concept for a local, secure AI architecture without cloud dependency
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">32 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">52</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Ccv – keep AI-generated files out of your repo
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">32 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">53</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          From a Law to an Ethic – a framework for individual digital responsibility
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">32 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">54</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Intent – Git records what changed, Intent records why
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">33 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">55</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: H-Core Snapshot – prevents ChatGPT from drifting
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">33 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">56</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Mech keyboard sounds driven by a hidden accelerometer in MacBooks
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">33 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">57</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: loopmaster – Livecoding DSP Environment
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">33 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">58</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Bettr – Can you beat a forensic waterfall engine?
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">33 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">59</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Alibaba AI Takes Aim at Silent Liver Epidemic
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">33 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">60</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          TechEmpower Benchmarks Led to a 25x MongoDB Performance Improvement
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">34 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">61</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Why refusing AI is a fight for the soul
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">35 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">62</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Utah bereavement author Kouri Richins found guilty of fatally poisoning husband
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">35 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">63</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          GPT‑5.4 Mini and Nano
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">35 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">64</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: CredibilityProfile – bringing reference checks earlier into hiring
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">35 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">65</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Caido partners with Strix for the best of both worlds in AI penstesting
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">36 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">66</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Seoul World Model: Grounding World Simulation Models in a Real-World Metropolis
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">36 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">67</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Firefox: What's new now, and what's coming soon
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">37 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">68</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Open-source white-box agentic red teamer for AI agents
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">37 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">69</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Do LLMs Follow Benford's Law?
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">37 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">70</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          We Ran the Largest AI Pokemon Tournament Ever. Now It's an Open Benchmark
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">37 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">71</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Chinese Open Source: A Definitive History
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">37 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">72</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Chairman Jordan Probes EU Bureaucrats Hiding Efforts to Censor American Speech
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">38 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">73</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Managing Complexity with Mycelium
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">38 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">74</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Hopsule – Persistent memory and decision layer for AI development
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">38 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">75</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          How Do You Want to Remember?
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">38 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">76</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Vilano Runtime – a durable runtime for building agent systems
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">38 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">77</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Knock – Control your Mac with a tap
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">39 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">78</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Beyond Vibe Coding: Using AI as an Engineering Collaborator
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">39 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">79</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Rtty
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">39 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">80</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Share and edit Markdown files with instant sync and comments
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">39 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">81</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Ask HN: How to instruct Claude Code to resurrect a website from the past
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">39 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">82</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Urban explorers mistake open shopping centre for abandoned building
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">40 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">83</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Open specification for AI-native company endpoints (agentic-web.ai)
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">40 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">84</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: I replaced Postgres and ClickHouse with one binary for web analytics
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">42 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">85</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Sending a perfectly-written email? That's so low-end
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">42 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">86</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: Gemfile RSS Feed Generator
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">42 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">87</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Tender offers are growing–but they're no exit replacement
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">42 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">88</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          DialHard turns 1 – Browser-to-phone calls, –€600 MRR, 1,200 users, one person
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">43 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">89</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Dell workforce drops 10% in fiscal 2026
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">44 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">90</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: SiteOne Crawler – Single-binary CI/CD gate for web quality regressions
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">45 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">91</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Hormuz Bypass Infrastructure Was Sized for a Short Disruption. This Is Not That.
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">46 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">92</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Fujairah loadings plummet: drone attacks rock UAE port prompting tanker rethink
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">46 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">93</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Why so many computer languages? (1977)
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">47 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">94</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Stanford EE292: Burgelman on Intel's mistakes and prospects
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">50 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">95</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          China Is Embracing OpenClaw, a New A.I. Agent, and the Government Is Wary
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">50 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">96</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          The Developer's Guide to Secure Job Hunting in 2026
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">50 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">97</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          The Tax Bill Haunting Your 401(k) and IRA
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">50 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">98</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          At 102 years old, Dean Simes might be Australia's oldest tech-help guy
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">51 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">99</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          Show HN: WWDC enamel pins inspired by developer culture
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">51 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr>
+      <tr >
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#555;">100</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          How I run multiple $10K MRR companies on a $20/month tech stack
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#888;white-space:nowrap;">52 minutes ago</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;"><span style="background:#e6f4ea;color:#1a7f37;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">ok</span></td>
+      </tr></tbody>
+    </table>
+
+    <div class="footer">
+      Generated by QA Wolf take-home validator &nbsp;·&nbsp; Playwright + Node.js
+    </div>
+
+  </div>
+</body>
+</html>
